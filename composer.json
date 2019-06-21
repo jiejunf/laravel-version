@@ -1,5 +1,7 @@
 {
   "name": "jiejunf/laravel-version-service",
+  "keywords": ["api", "provider", "laravel"],
+  "license": "MIT",
   "authors": [
     {
       "name": "jiejunf",
@@ -12,7 +14,8 @@
     }
   },
   "require": {
-    "php": ">=7"
+    "php": ">=7",
+    "laravel/framework":"^5.0"
   },
   "extra": {
     "laravel": {
