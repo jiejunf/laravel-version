@@ -37,7 +37,8 @@ class ServerVersionController extends Controller
      */
     private function _getCurrentVersion()
     {
-        exec('git log -1', $result);
+        $git = config('version.git_path', 'git');
+        exec($git . ' log -1', $result);
         $c_result = collect($result);
         $c_result->shift();
         $kv_result = collect();
@@ -61,8 +62,9 @@ class ServerVersionController extends Controller
         ignore_user_abort(1);
         $pre_comment = $this->_getCurrentVersion();
         $app_root = base_path();
-        $result = shell_exec('git checkout ' . $app_root .
-            ' && git pull origin master && chown -R www-data:www-data ' . $app_root .
+        $git = config('version.git_path', 'git');
+        $result = shell_exec($git . ' checkout ' . $app_root .
+            ' && ' . $git . ' pull origin master && chown -R ' . config('version.web_user') . ':' . config('version.web_group') . ' ' . $app_root .
             ' && chmod -R 755 ' . $app_root .
             ' && chmod -R ug+rwx ' . $app_root . '/storage ' . $app_root . '/bootstrap/cache' .
             ' && chmod -R 770 ' . $app_root . '/.git');

@@ -8,10 +8,12 @@
   ],
   "autoload": {
     "psr-4": {
-      "Jiejunf\\VersionService\\":"src/"
+      "Jiejunf\\VersionService\\": "src/"
     }
   },
-  "require": {},
+  "require": {
+    "php": ">=7"
+  },
   "extra": {
     "laravel": {
       "providers": [

@@ -41,4 +41,8 @@ return [
     'server_route_prefix' => 'api/version',
 
     'server_controller_namespace' => '\Jiejunf\VersionService\Controllers',
+
+    'web_user' => 'www-data',
+    'web_group' => 'www-data',
+    'git_path' => 'git',
 ];
