@@ -1,0 +1,22 @@
+{
+  "name": "jiejunf/laravel-version-service",
+  "authors": [
+    {
+      "name": "jiejunf",
+      "email": "jiejunwork@foxmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Jiejunf\\VersionService\\":"src/"
+    }
+  },
+  "require": {},
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Jiejunf\\VersionService\\VersionServiceProvider"
+      ]
+    }
+  }
+}
