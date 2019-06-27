@@ -37,7 +37,7 @@ php artisan vendor:publish --provider="Jiejunf\VersionService\VersionServiceProv
     > 客户端接口需要迁移数据表，迁移前请根据项目配置好参数[参数信息](#configuration) 
 
     ```php
-    php artisan migrate
+    php artisan migrate --path="vendor/jiejunf/laravel-version-service/src/migrations"
     ```
     > 以下路由的参数均来自`config/version.php`
     
@@ -58,8 +58,8 @@ php artisan vendor:publish --provider="Jiejunf\VersionService\VersionServiceProv
          |-------------------|:--------:|:------:|--------------------------
          | platform          | required | string | 平台，必须是配置中的一个
          | app\_type         | required | string | 类型，必须是配置中的一个；没有配置时用app代替
-         | app\_version      | required | string | 版本号，外部显示版本号
-         | version\_code     | required | string | 版本号，内部迭代版本号
+         | app\_version      | required | string | 版本号，外部显示版本号：v1.0.2
+         | version\_code     | required | string | 版本号，内部迭代版本号：2
          | is\_force\_update |          | string | 必须是 y 或 n 中的一个，为空时默认为y
          | download\_path    |          | string | 此版本的下载地址
          | description       |          | string | 版本描述内容

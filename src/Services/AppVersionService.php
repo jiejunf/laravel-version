@@ -67,17 +67,14 @@ class AppVersionService
      */
     public function updateOrCreateVersion($version_info)
     {
-        $appType = substr($version_info['app_type'], 0, 1);
-        $platform = substr($version_info['platform'], 0, 1);
-
         if (!$version_info['version_id']) {
             $appVersion = new AppVersionLog();
         } else {
             /** @var AppVersionLog $appVersion */
             $appVersion = AppVersionLog::query()->where('id', $version_info['version_id'])->firstOrFail();
         }
-        $appVersion->platform = $platform;
-        if (config('version.app_type')) $appVersion->app_type = $appType;
+        $appVersion->platform = $version_info['platform'];
+        if (config('version.app_type')) $appVersion->app_type = $version_info['app_type'];
         $appVersion->app_version = $version_info['app_version'];
         $appVersion->app_version_code = $version_info['version_code'];
         $appVersion->is_force_update = $version_info['is_force_update'] ?? 'y';

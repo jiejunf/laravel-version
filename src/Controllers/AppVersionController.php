@@ -34,9 +34,7 @@ class AppVersionController extends Controller
      */
     public function getLatestVersion($type, $platform)
     {
-        $typeShortName = substr($type, 0, 1);
-        $platformShortName = substr($platform, 0, 1);
-        $result = $this->appVersionService->getLatestVersion($typeShortName, $platformShortName);
+        $result = $this->appVersionService->getLatestVersion($type, $platform);
         return response()->json(['result' => 'success', 'data' => $result]);
     }
 
@@ -48,11 +46,9 @@ class AppVersionController extends Controller
      */
     public function getVersionList(Request $request, $type, $platform)
     {
-        $typeShortName = substr($type, 0, 1);
-        $platformShortName = substr($platform, 0, 1);
         $page = $request->page ?? 1;
         $per_page = $request->per_page ?? 10;
-        $result = $this->appVersionService->getVersionList($typeShortName, $platformShortName, $page, $per_page);
+        $result = $this->appVersionService->getVersionList($type, $platform, $page, $per_page);
         return response()->json(['result' => 'success', 'data' => $result]);
     }
 
