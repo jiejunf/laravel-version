@@ -62,7 +62,7 @@ class AppVersionController extends Controller
     public function updateOrCreateVersion(Request $request)
     {
         $config_platform = config('version.platform');
-        $config_appType = config('version.app_type') ?? ['app'];
+        $config_appType = config('version.app_type');
         $request->validate([
                 'platform' => 'required|in:' . join(',', $config_platform),
                 'app_version' => 'required|string',
