@@ -18,9 +18,7 @@ return [
 
     'platform' => ['android', 'ios'],
 
-    // if equal NULL will remove table_column(app_type),and {type} be replaced with 'app' in route
-    // such as `versions/customer/android/latest` -> `versions/app/android/latest`
-    //                   ^^^^^^^^                              ^^^
+    // if app_type is empty, will remove table_column(app_type) and route param {type}
     'app_type' => ['worker', 'customer'],
 
     'app_route_middleware' => [],
