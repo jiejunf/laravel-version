@@ -19,19 +19,16 @@ Route::group([
     'middleware' => config('version.app_route_middleware'),
     'prefix' => config('version.app_route_prefix'),
     'namespace' => config('version.app_controller_namespace')], function () {
+    $configAppType = config('version.app_type');
+    $routeWhere = ['platform' => join('|', config('version.platform'))]
+        + ($configAppType ? ['type' => join('|', $configAppType)] : []);
+    $routeType = $configAppType ? '{type}' : '';
     // 获取最新版本
-    Route::get('{type}/{platform}/latest', 'AppVersionController@getLatestVersion')->where([
-        'type' => join('|', config('version.app_type') ?? ['app']),
-        'platform' => join('|', config('version.platform')),
-    ]);
+    Route::get($routeType . '/{platform}/latest', 'AppVersionController@getLatestVersion')->where($routeWhere);
     // 获取版本列表
-    Route::get('{type}/{platform}', 'AppVersionController@getVersionList')->where([
-        'type' => join('|', config('version.app_type') ?? ['app']),
-        'platform' => join('|', config('version.platform')),
-    ]);
+    Route::get($routeType . '/{platform}', 'AppVersionController@getVersionList')->where($routeWhere);
     // 更新版本
     Route::put('/', 'AppVersionController@updateOrCreateVersion');
-
 });
 /**
  * Server Version

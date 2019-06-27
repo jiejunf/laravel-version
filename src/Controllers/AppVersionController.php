@@ -28,24 +28,25 @@ class AppVersionController extends Controller
 
     /**
      * Get latest app version of type (Android or iOS)
-     * @param string $type c[customer],w[worker]
-     * @param string $platform a[android],i[ios]
+     * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getLatestVersion($type, $platform)
+    public function getLatestVersion(Request $request)
     {
+        $type = $request->route('type');
+        $platform = $request->route('platform');
         $result = $this->appVersionService->getLatestVersion($type, $platform);
         return response()->json(['result' => 'success', 'data' => $result]);
     }
 
     /** Get latest app version of type (Android or iOS)
      * @param Request $request
-     * @param $type
-     * @param $platform
      * @return \Illuminate\Http\JsonResponse
      */
-    public function getVersionList(Request $request, $type, $platform)
+    public function getVersionList(Request $request)
     {
+        $type = $request->route('type');
+        $platform = $request->route('platform');
         $page = $request->page ?? 1;
         $per_page = $request->per_page ?? 10;
         $result = $this->appVersionService->getVersionList($type, $platform, $page, $per_page);
@@ -63,15 +64,15 @@ class AppVersionController extends Controller
         $config_platform = config('version.platform');
         $config_appType = config('version.app_type') ?? ['app'];
         $request->validate([
-            'platform' => 'required|in:' . join(',', $config_platform),
-            'app_type' => 'required|in:' . join(',', $config_appType),
-            'app_version' => 'required|string',
-            'version_code' => 'required',
-            'is_force_update' => 'in:y,n',
-            'download_path' => 'string',
-            'description' => 'string',
-            'version_id' => 'present',
-        ], [
+                'platform' => 'required|in:' . join(',', $config_platform),
+                'app_version' => 'required|string',
+                'version_code' => 'required',
+                'is_force_update' => 'in:y,n',
+                'download_path' => 'string',
+                'description' => 'string',
+                'version_id' => 'present',
+            ] + ($config_appType ? ['app_type' => 'required|in:' . join(',', $config_appType),
+            ] : []), [
             'required' => ':attribute為必填',
             'in' => ':attribute必須以下其中之一: :values',
         ], [

@@ -57,7 +57,7 @@ php artisan vendor:publish --provider="Jiejunf\VersionService\VersionServiceProv
          | name              | required | type   | desc 
          |-------------------|:--------:|:------:|--------------------------
          | platform          | required | string | 平台，必须是配置中的一个
-         | app\_type         | required | string | 类型，必须是配置中的一个；没有配置时用app代替
+         | app\_type         | required | string | 类型，必须是配置中的一个；没有配置时可无
          | app\_version      | required | string | 版本号，外部显示版本号：v1.0.2
          | version\_code     | required | string | 版本号，内部迭代版本号：2
          | is\_force\_update |          | string | 必须是 y 或 n 中的一个，为空时默认为y
