@@ -64,7 +64,7 @@ class ServerVersionController extends Controller
         $app_root = base_path();
         $git = config('version.git_path', 'git');
         $result = shell_exec($git . ' checkout ' . $app_root .
-            ' && ' . $git . ' pull origin master && chown -R ' . config('version.web_user') . ':' . config('version.web_group') . ' ' . $app_root .
+            ' && ' . $git . ' pull origin ' . config('version.origin_branch') . ' && chown -R ' . config('version.web_user') . ':' . config('version.web_group') . ' ' . $app_root .
             ' && chmod -R 755 ' . $app_root .
             ' && chmod -R ug+rwx ' . $app_root . '/storage ' . $app_root . '/bootstrap/cache' .
             ' && chmod -R 770 ' . $app_root . '/.git');

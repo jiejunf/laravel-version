@@ -76,8 +76,8 @@ class AppVersionController extends Controller
             'required' => ':attribute為必填',
             'in' => ':attribute必須以下其中之一: :values',
         ], [
-            'platform' => 'APP平台（' . join('/', $config_platform) . ')',
-            'app_type' => 'APP種類(' . join('/', $config_appType ?: []) . ')',
+            'platform' => 'APP平台',
+            'app_type' => 'APP種類',
             'app_version' => 'APP版本',
             'is_force_update' => '是否強制更新',
             'download_path' => '下載地址',
