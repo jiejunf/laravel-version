@@ -22,11 +22,13 @@ class AppVersionService
      * Get the latest version of a type (Android or iOS)
      * @param $type
      * @param $platform
-     * @return mixed
+     * @param $customerVersion
+     * @return AppVersionLog
      */
-    public function getLatestVersion($type, $platform)
+    public function getLatestVersion($type, $platform, $customerVersion = 0)
     {
-        return AppVersionLog::query()
+        /** @var AppVersionLog $latestVersion */
+        $latestVersion = AppVersionLog::query()
             ->when(config('version.app_type'), function ($query) use ($type) {
                 /** @var \Illuminate\Database\Eloquent\Builder $query */
                 $query->where('app_type', $type);
@@ -34,6 +36,13 @@ class AppVersionService
             ->where('platform', $platform)
             ->latest('app_version_code')
             ->first();
+        if (AppVersionLog::query()->where([
+            ['app_version_code', '>', $customerVersion],
+            ['is_force_update', 'y']
+        ])->exists()) {
+            $latestVersion->is_force_update = 'y';
+        }
+        return $latestVersion;
     }
 
     /**
@@ -62,7 +71,7 @@ class AppVersionService
     /**
      * Create a new app version
      * @param array $version_info
-     * @return bool
+     * @return AppVersionLog
      * @throws Exception
      */
     public function updateOrCreateVersion($version_info)
@@ -83,6 +92,6 @@ class AppVersionService
         if ($appVersion->save() === false) {
             throw new Exception('', 10050);
         }
-        return true;
+        return $appVersion;
     }
 }

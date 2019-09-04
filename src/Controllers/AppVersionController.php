@@ -12,8 +12,9 @@
 
 namespace Jiejunf\VersionService\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Jiejunf\VersionService\Models\AppVersionLog;
 use Jiejunf\VersionService\Services\AppVersionService;
 
 class AppVersionController extends Controller
@@ -35,8 +36,8 @@ class AppVersionController extends Controller
     {
         $type = $request->route('type');
         $platform = $request->route('platform');
-        $result = $this->appVersionService->getLatestVersion($type, $platform);
-        return response()->json(['result' => 'success', 'data' => $result]);
+        $latestVersion = $this->appVersionService->getLatestVersion($type, $platform, $request->header('App-Version'));
+        return response()->json(['result' => 'success', 'data' => $latestVersion]);
     }
 
     /** Get latest app version of type (Android or iOS)
@@ -63,10 +64,11 @@ class AppVersionController extends Controller
     {
         $config_platform = config('version.platform');
         $config_appType = config('version.app_type');
+        $minVersionCode = AppVersionLog::query()->where($request->only(['platform']))->max('app_version_code') + 1;
         $request->validate([
                 'platform' => 'required|in:' . join(',', $config_platform),
                 'app_version' => 'required|string',
-                'version_code' => 'required',
+                'version_code' => 'nullable|int|min:' . $minVersionCode,
                 'is_force_update' => 'in:y,n',
                 'download_path' => 'string',
                 'description' => 'string',
@@ -84,7 +86,9 @@ class AppVersionController extends Controller
             'description' => '版本訊息',
             'version_id' => '版本id'
         ]);
-        $result = $this->appVersionService->updateOrCreateVersion($request->all());
+        $versionInfo = $request->all();
+        $versionInfo['version_code'] = $versionInfo['version_code'] ?? $minVersionCode;
+        $result = $this->appVersionService->updateOrCreateVersion($versionInfo);
         return response()->json(['result' => 'success', 'data' => $result]);
     }
 

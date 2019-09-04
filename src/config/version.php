@@ -43,6 +43,7 @@ return [
     'web_user' => 'www-data',
     'web_group' => 'www-data',
     'git_path' => 'git',
+
     // which origin branch for pull
     'origin_branch' => 'master',
 ];

@@ -24,7 +24,7 @@ php artisan vendor:publish --provider="Jiejunf\VersionService\VersionServiceProv
 ```
 参数区分客户端及服务端，根据需求配置合适的参数
 
-`app_type`参数为同平台多版本配置，如Android平台上有雇主/雇员、商户/顾客/企业之类的不同版本,若无多版本可填写单一版本或至空(为空数组时路由参数用`app`作为关键字代替)
+`app_type`参数为同平台多版本配置，如Android平台上有雇主/雇员、商户/顾客/企业之类的不同版本,若无多版本可填写单一版本或至空(为空数组时此路由参数将被移除)
 
 `server_enable`参数为false时，服务端接口无法请求
 
@@ -44,6 +44,11 @@ php artisan vendor:publish --provider="Jiejunf\VersionService\VersionServiceProv
     获取最新版本
     
     - GET /{app_prefix}/{type}/{platform}/latest
+    - Headers
+    
+         | name              | required | type   | desc 
+         |-------------------|:--------:|:------:|--------------------------
+         | App-Version       |          | integer| 内部版本号,参数影响此版本到最新版本是否需要强制更新
     
     获取版本列表
     
@@ -58,8 +63,8 @@ php artisan vendor:publish --provider="Jiejunf\VersionService\VersionServiceProv
          |-------------------|:--------:|:------:|--------------------------
          | platform          | required | string | 平台，必须是配置中的一个
          | app\_type         | required | string | 类型，必须是配置中的一个；没有配置时可无
-         | app\_version      | required | string | 版本号，外部显示版本号：v1.0.2
-         | version\_code     | required | string | 版本号，内部迭代版本号：2
+         | app\_version      | required | string | 外部版本号：v1.0.2
+         | version\_code     | present  | integer| 内部版本号，为空时取最大值自增：2
          | is\_force\_update |          | string | 必须是 y 或 n 中的一个，为空时默认为y
          | download\_path    |          | string | 此版本的下载地址
          | description       |          | string | 版本描述内容
@@ -75,7 +80,7 @@ php artisan vendor:publish --provider="Jiejunf\VersionService\VersionServiceProv
     
     拉取服务器远程主线代码
 
-    > 网络用户需要配置远程仓库ssh公钥
+    > 测试用，生产环境中此功能不可靠。网络用户需要配置远程仓库ssh公钥
 
     - POST /{server_prefix}/update
     
@@ -84,8 +89,8 @@ php artisan vendor:publish --provider="Jiejunf\VersionService\VersionServiceProv
 根据MIT许可证发布, 见[LICENSE](LICENSE).
          
 [ico-license]:https://img.shields.io/badge/license-MIT-green.svg
-[ico-version]:https://img.shields.io/badge/version-v0.3-blue.svg
-[ico-downloads]:https://img.shields.io/badge/downloads-<1M-green.svg
+[ico-version]:https://img.shields.io/badge/version-v0.6-blue.svg
+[ico-downloads]:https://img.shields.io/badge/size-<1M-green.svg
 
 [link-downloads]:https://packagist.org/packages/jiejunf/laravel-version-service
 [link-packagist]:https://packagist.org/packages/jiejunf/laravel-version-service
