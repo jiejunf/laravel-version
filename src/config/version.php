@@ -27,6 +27,8 @@ return [
 
     'app_controller_namespace' => '\Jiejunf\VersionService\Controllers',
 
+    'app_header' => 'App-Version',
+
     /* ======================
      * server version config
      * ======================

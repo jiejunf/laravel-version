@@ -14,7 +14,6 @@ namespace Jiejunf\VersionService\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Jiejunf\VersionService\Models\AppVersionLog;
 use Jiejunf\VersionService\Services\AppVersionService;
 
 class AppVersionController extends Controller
@@ -36,7 +35,8 @@ class AppVersionController extends Controller
     {
         $type = $request->route('type');
         $platform = $request->route('platform');
-        $latestVersion = $this->appVersionService->getLatestVersion($type, $platform, $request->header('App-Version'));
+        $versionHeader = config('version.app_header', 'App-Version');
+        $latestVersion = $this->appVersionService->getLatestVersion($type, $platform, $request->header($versionHeader, 0));
         return response()->json(['result' => 'success', 'data' => $latestVersion]);
     }
 
@@ -64,11 +64,9 @@ class AppVersionController extends Controller
     {
         $config_platform = config('version.platform');
         $config_appType = config('version.app_type');
-        $minVersionCode = AppVersionLog::query()->where($request->only(['platform']))->max('app_version_code') + 1;
         $request->validate([
                 'platform' => 'required|in:' . join(',', $config_platform),
-                'app_version' => 'required|string',
-                'version_code' => 'nullable|int|min:' . $minVersionCode,
+                'app_version' => 'required|string|unique:app_version_logs,app_version',
                 'is_force_update' => 'in:y,n',
                 'download_path' => 'string',
                 'description' => 'string',
@@ -87,7 +85,6 @@ class AppVersionController extends Controller
             'version_id' => '版本id'
         ]);
         $versionInfo = $request->all();
-        $versionInfo['version_code'] = $versionInfo['version_code'] ?? $minVersionCode;
         $result = $this->appVersionService->updateOrCreateVersion($versionInfo);
         return response()->json(['result' => 'success', 'data' => $result]);
     }

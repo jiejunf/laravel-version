@@ -17,6 +17,17 @@ use Jiejunf\VersionService\Models\AppVersionLog;
 
 class AppVersionService
 {
+    /**
+     * @param string $version
+     * @return string
+     */
+    public static function versionPad($version)
+    {
+        return sprintf(
+            preg_replace('/\d+/', '%04s', $version)
+            , ...explode('.', preg_replace('/\D+/', '.', $version))
+        );
+    }
 
     /**
      * Get the latest version of a type (Android or iOS)
@@ -37,7 +48,7 @@ class AppVersionService
             ->latest('app_version_code')
             ->first();
         if (AppVersionLog::query()->where([
-            ['app_version_code', '>', $customerVersion],
+            ['app_version_code', '>', self::versionPad($customerVersion),],
             ['is_force_update', 'y']
         ])->exists()) {
             $latestVersion->is_force_update = 'y';
@@ -85,7 +96,6 @@ class AppVersionService
         $appVersion->platform = $version_info['platform'];
         if (config('version.app_type')) $appVersion->app_type = $version_info['app_type'];
         $appVersion->app_version = $version_info['app_version'];
-        $appVersion->app_version_code = $version_info['version_code'];
         $appVersion->is_force_update = $version_info['is_force_update'] ?? 'y';
         $appVersion->download_path = $version_info['download_path'] ?? '';
         $appVersion->description = $version_info['description'] ?? '';

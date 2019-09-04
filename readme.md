@@ -2,7 +2,7 @@
 
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE)
-[![Total Downloads][ico-downloads]][link-downloads]
+[![Total Size][ico-downloads]][link-downloads]
 
 ## About
 
@@ -48,7 +48,9 @@ php artisan vendor:publish --provider="Jiejunf\VersionService\VersionServiceProv
     
          | name              | required | type   | desc 
          |-------------------|:--------:|:------:|--------------------------
-         | App-Version       |          | integer| 内部版本号,参数影响此版本到最新版本是否需要强制更新
+         | App-Version       |          | string | 外版本号,参数影响此版本到最新版本是否需要强制更新
+         
+         > 在config.version.app_header中设定
     
     获取版本列表
     
@@ -64,7 +66,6 @@ php artisan vendor:publish --provider="Jiejunf\VersionService\VersionServiceProv
          | platform          | required | string | 平台，必须是配置中的一个
          | app\_type         | required | string | 类型，必须是配置中的一个；没有配置时可无
          | app\_version      | required | string | 外部版本号：v1.0.2
-         | version\_code     | present  | integer| 内部版本号，为空时取最大值自增：2
          | is\_force\_update |          | string | 必须是 y 或 n 中的一个，为空时默认为y
          | download\_path    |          | string | 此版本的下载地址
          | description       |          | string | 版本描述内容
