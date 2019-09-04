@@ -66,7 +66,7 @@ class AppVersionController extends Controller
         $config_appType = config('version.app_type');
         $request->validate([
                 'platform' => 'required|in:' . join(',', $config_platform),
-                'app_version' => 'required|string|unique:app_version_logs,app_version',
+                'app_version' => 'required|string|unique:app_version_logs,app_version,' . $request->get('version_id'),
                 'is_force_update' => 'in:y,n',
                 'download_path' => 'string',
                 'description' => 'string',

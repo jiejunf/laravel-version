@@ -23,7 +23,7 @@ class AppVersionService
      */
     public static function versionPad($version)
     {
-        return sprintf(
+        return sprintf('v' .
             preg_replace('/\d+/', '%04s', $version)
             , ...explode('.', preg_replace('/\D+/', '.', $version))
         );
